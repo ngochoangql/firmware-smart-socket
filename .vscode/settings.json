@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "device.h": "c",
+        "nvs.h": "c",
+        "button_task.h": "c"
+    }
+}
