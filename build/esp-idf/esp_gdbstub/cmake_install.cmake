@@ -1,4 +1,4 @@
-# Install script for directory: C:/Espressif/frameworks/esp-idf-v4.4.5/components/esp_gdbstub
+# Install script for directory: C:/Espressif/frameworks/esp-idf-v4.4.8/components/esp_gdbstub
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

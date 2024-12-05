@@ -1,4 +1,4 @@
-# Install script for directory: D:/esp/smart-socket/main
+# Install script for directory: C:/Users/USER/IdeaProjects/firmware-smart-socket/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

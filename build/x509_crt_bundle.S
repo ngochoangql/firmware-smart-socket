@@ -1,4 +1,4 @@
-/* * Data converted from D:/esp/smart-socket/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from C:/Users/USER/IdeaProjects/firmware-smart-socket/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 .section .rodata.embedded

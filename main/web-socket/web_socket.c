@@ -50,7 +50,7 @@ void handle_update_relay_from_device(int relayNumber, int status)
 // Hàm điều khiển relay
 void update_relay(int relay_index, int relay_state)
 {
-    if (relay_state == 1)
+    if (relay_state == 0)
     {
         ESP_LOGI("RELAY_CONTROL", "Relay %d turned ON", relay_index);
         // Thực hiện bật relay tại relay_index
@@ -283,7 +283,7 @@ static void websocket_event_handler(void *handler_args, esp_event_base_t base, i
 void websocket_app_start(void)
 {
     esp_websocket_client_config_t websocket_cfg = {
-        .uri = "ws://172.20.10.8:8080/websocket", // Thay bằng URL WebSocket của bạn
+        .uri = "ws://172.20.10.3:8080/websocket", // Thay bằng URL WebSocket của bạn
     };
 
     // Khởi tạo WebSocket client

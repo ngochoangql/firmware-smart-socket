@@ -72,7 +72,7 @@ void acmeasure_task(void *pvParameter)
 
                 // Gửi dữ liệu qua HTTP POST
                 esp_http_client_config_t config = {
-                    .url = "http://172.20.10.8:8080/api/v1/data",
+                    .url = "http://172.20.10.3:8080/api/v1/data",
                     .event_handler = http_event_handler,
                 };
                 esp_http_client_handle_t client = esp_http_client_init(&config);

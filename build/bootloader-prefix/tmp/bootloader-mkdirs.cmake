@@ -4,16 +4,16 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "C:/Espressif/frameworks/esp-idf-v4.4.5/components/bootloader/subproject"
-  "D:/esp/smart-socket/build/bootloader"
-  "D:/esp/smart-socket/build/bootloader-prefix"
-  "D:/esp/smart-socket/build/bootloader-prefix/tmp"
-  "D:/esp/smart-socket/build/bootloader-prefix/src/bootloader-stamp"
-  "D:/esp/smart-socket/build/bootloader-prefix/src"
-  "D:/esp/smart-socket/build/bootloader-prefix/src/bootloader-stamp"
+  "C:/Espressif/frameworks/esp-idf-v4.4.8/components/bootloader/subproject"
+  "C:/Users/USER/IdeaProjects/firmware-smart-socket/build/bootloader"
+  "C:/Users/USER/IdeaProjects/firmware-smart-socket/build/bootloader-prefix"
+  "C:/Users/USER/IdeaProjects/firmware-smart-socket/build/bootloader-prefix/tmp"
+  "C:/Users/USER/IdeaProjects/firmware-smart-socket/build/bootloader-prefix/src/bootloader-stamp"
+  "C:/Users/USER/IdeaProjects/firmware-smart-socket/build/bootloader-prefix/src"
+  "C:/Users/USER/IdeaProjects/firmware-smart-socket/build/bootloader-prefix/src/bootloader-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "D:/esp/smart-socket/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
+    file(MAKE_DIRECTORY "C:/Users/USER/IdeaProjects/firmware-smart-socket/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
 endforeach()

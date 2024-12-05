@@ -1,4 +1,4 @@
-# Install script for directory: C:/Espressif/frameworks/esp-idf-v4.4.5/components/espcoredump
+# Install script for directory: C:/Espressif/frameworks/esp-idf-v4.4.8/components/espcoredump
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
