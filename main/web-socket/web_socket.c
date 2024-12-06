@@ -283,7 +283,7 @@ static void websocket_event_handler(void *handler_args, esp_event_base_t base, i
 void websocket_app_start(void)
 {
     esp_websocket_client_config_t websocket_cfg = {
-        .uri = "ws://172.20.10.8:8080/websocket", // Thay bằng URL WebSocket của bạn
+        .uri = "ws://192.168.1.3:8080/websocket", // Thay bằng URL WebSocket của bạn
     };
 
     // Khởi tạo WebSocket client

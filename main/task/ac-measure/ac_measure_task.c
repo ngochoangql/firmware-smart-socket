@@ -28,7 +28,7 @@ void acmeasure_task(void *pvParameter)
             uint32_t active_power = UNIT_ACMEASURE_getPower(&unit_acmeasure);
             uint32_t apparent_power = UNIT_ACMEASURE_getApparentPower(&unit_acmeasure);
 
-            printf("Voltage: %d , Current: %d , Active Power: %d , Apparent Power: %d .\n", voltage, current, active_power, apparent_power);
+            printf("voltage: %d , Current: %d , Active Power: %d , Apparent Power: %d .\n", voltage, current, active_power, apparent_power);
             data_buffer[data_index].current = current;
             data_buffer[data_index].voltage = voltage * 10;
             data_buffer[data_index].power = active_power;
@@ -59,7 +59,7 @@ void acmeasure_task(void *pvParameter)
                 for (int i = 0; i < SAMPLES_PER_SECOND; i++)
                 {
                     snprintf(temp_data, 1000,
-                             "{\"current\":%d,\"voltage\":%d,\"power\":%d,\"apparentPower\":%.d}",
+                             "{\"current\":%d,\"voltage\":%d,\"activePower\":%d,\"apparentPower\":%.d}",
                              data_buffer[i].current, data_buffer[i].voltage,
                              data_buffer[i].power, data_buffer[i].apparentPower);
                     strcat(post_data, temp_data);
@@ -72,7 +72,7 @@ void acmeasure_task(void *pvParameter)
 
                 // Gửi dữ liệu qua HTTP POST
                 esp_http_client_config_t config = {
-                    .url = "http://172.20.10.8:8080/api/v1/data",
+                    .url = "http://192.168.1.3:8080/api/v1/data/24082000",
                     .event_handler = http_event_handler,
                 };
                 esp_http_client_handle_t client = esp_http_client_init(&config);
