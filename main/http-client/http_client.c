@@ -38,7 +38,11 @@ esp_err_t http_event_handler(esp_http_client_event_t *evt) {
 void send_device_data(device_t device) {
     // Cấu hình URL và xử lý sự kiện HTTP
     esp_http_client_config_t config = {
+<<<<<<< HEAD
         .url = "http://172.20.10.3:8080/api/v1/devices",  // Thay URL của API thực tế của bạn
+=======
+        .url = "http://192.168.1.3:8080/api/v1/devices",
+>>>>>>> 71681f41a62a0cfa64ac55b30f26402e83233646
         .event_handler = http_event_handler,
     };
     esp_http_client_handle_t client = esp_http_client_init(&config);
@@ -72,7 +76,7 @@ void send_device_data(device_t device) {
 void post_device_to_api(device_t device) {
     // Cấu hình HTTP client
     esp_http_client_config_t config = {
-        .url = "http://localhost:3000/api/devices",
+        .url = "http://192.168.1.3:8080/api/v1/devices",
         .event_handler = NULL, // Bạn có thể định nghĩa handler nếu cần
     };
     esp_http_client_handle_t client = esp_http_client_init(&config);
