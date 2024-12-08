@@ -1,4 +1,6 @@
 #include "http_client.h"
+static const char *BASE_URL = "http://172.20.10.8:8080"; 
+static const char *PRODUCT_ID = "24082000";  
 
 static const char *TAG = "HTTP_POST";
 
@@ -36,8 +38,11 @@ esp_err_t http_event_handler(esp_http_client_event_t *evt) {
 // Hàm gửi dữ liệu thiết bị qua HTTP POST
 void send_device_data(device_t device) {
     // Cấu hình URL và xử lý sự kiện HTTP
+    char url[128];
+    snprintf(url, sizeof(url), "%s/api/v1/relays/init/%s",BASE_URL, PRODUCT_ID);
+
     esp_http_client_config_t config = {
-        .url = "http://192.168.1.3:8080/api/v1/devices",
+        .url = url,
         .event_handler = http_event_handler,
     };
     esp_http_client_handle_t client = esp_http_client_init(&config);
@@ -70,8 +75,10 @@ void send_device_data(device_t device) {
 
 void post_device_to_api(device_t device) {
     // Cấu hình HTTP client
+        char url[128];
+    snprintf(url, sizeof(url), "%s/api/v1/devices",BASE_URL);
     esp_http_client_config_t config = {
-        .url = "http://192.168.1.3:8080/api/v1/devices",
+        .url = url,
         .event_handler = NULL, // Bạn có thể định nghĩa handler nếu cần
     };
     esp_http_client_handle_t client = esp_http_client_init(&config);
@@ -86,6 +93,44 @@ void post_device_to_api(device_t device) {
     esp_http_client_set_method(client, HTTP_METHOD_POST);
     esp_http_client_set_header(client, "Content-Type", "application/json");
     esp_http_client_set_post_field(client, post_data, strlen(post_data));
+
+    // Gửi yêu cầu HTTP POST
+    esp_err_t err = esp_http_client_perform(client);
+    if (err == ESP_OK) {
+        ESP_LOGI(TAG, "HTTP POST Status = %d, content_length = %d",
+                 esp_http_client_get_status_code(client),
+                 esp_http_client_get_content_length(client));
+    } else {
+        ESP_LOGE(TAG, "HTTP POST request failed: %s", esp_err_to_name(err));
+    }
+
+    // Dọn dẹp HTTP client
+    esp_http_client_cleanup(client);
+}
+
+void post_relay_to_api(device_t device) {
+    // Cấu hình HTTP client
+    char url[128];
+        snprintf(url, sizeof(url), "%s/api/v1/relays/init/%s",BASE_URL, PRODUCT_ID);
+
+    esp_http_client_config_t config = {
+        .url = url,
+        .event_handler = NULL, // Bạn có thể định nghĩa handler nếu cần
+    };
+    esp_http_client_handle_t client = esp_http_client_init(&config);
+
+    // Chuẩn bị dữ liệu JSON
+    char post_data[512];
+    snprintf(post_data, sizeof(post_data),
+             "{\"productId\":\"%s\",\"relay1\":%i,\"relay2\":%i,\"status\":%i}",
+             device.productId, device.relayModules[0].status,
+             device.relayModules[1].status,
+             device.relayModules[2].status);
+
+    // Cấu hình yêu cầu POST
+    esp_http_client_set_method(client, HTTP_METHOD_GET);
+    esp_http_client_set_header(client, "Content-Type", "application/json");
+    // esp_http_client_set_post_field(client, post_data, strlen(post_data));
 
     // Gửi yêu cầu HTTP POST
     esp_err_t err = esp_http_client_perform(client);

@@ -14,5 +14,7 @@ idf_component_register(SRCS "main.c"
                             "http-client/http_client.c"
                             "task/ac-measure/ac_measure_task.c"
                             "ac-measure/unit_acmeasure.c"
+                            "task/led/led_task.c"
                        INCLUDE_DIRS "."
            )
+# set(KCONFIG_PATH ${CMAKE_CURRENT_LIST_DIR}/Kconfig)

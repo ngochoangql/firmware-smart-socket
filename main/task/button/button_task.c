@@ -1,6 +1,6 @@
 #include "button_task.h"
 
-#define BUTTON_DEVICE 39
+#define BUTTON_DEVICE 26
 
 button_t button = {
     .buttonGpio = BUTTON_DEVICE,
@@ -21,6 +21,9 @@ void handle_button_press()
         turnOnRelay(&device.relayModules[0]);
         turnOnRelay(&device.relayModules[1]);
         turnOnRelay(&device.relayModules[2]);
+        handle_update_relay_from_device(1, 1);
+        handle_update_relay_from_device(2, 1);
+        handle_update_relay_from_device(3, 1);
     }
     else
     {
@@ -28,6 +31,9 @@ void handle_button_press()
         turnOffRelay(&device.relayModules[0]);
         turnOffRelay(&device.relayModules[1]);
         turnOffRelay(&device.relayModules[2]);
+        handle_update_relay_from_device(1, 0);
+        handle_update_relay_from_device(2, 0);
+        handle_update_relay_from_device(3, 0);
     }
 }
 
@@ -35,7 +41,7 @@ void handle_button_press()
 static void handle_button_hold()
 {
     printf("Nút nhấn đang được giữ sang SmartConfig!\n");
-    save_string_to_nvs("WIFI_MODE","SMART_CONFIG");
+    save_string_to_nvs("WIFI_MODE", "SMART_CONFIG");
     smart_config_start();
 }
 static void handle_button_hold_config()
@@ -71,7 +77,7 @@ void buttonTask(void *pbParameter)
         case BUTTON_PRESSED:
             if (button_level == 1)
             {
-            
+
                 TickType_t current_time = xTaskGetTickCount();
                 if ((current_time - press_start_time) >= hold_threshold_config)
                 {
@@ -88,8 +94,7 @@ void buttonTask(void *pbParameter)
                     button.buttonState = BUTTON_IDLE;
                     handle_button_press();
                 }
-                
-            }            
+            }
             break;
 
         case BUTTON_HOLD:

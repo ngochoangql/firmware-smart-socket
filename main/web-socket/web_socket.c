@@ -1,5 +1,5 @@
 #include "web_socket.h"
-
+static const char *WEBSOCKET_URL = "ws://172.20.10.8:8080/websocket";
 static const char *TAG = "WebSocket";
 esp_websocket_client_handle_t client;
 
@@ -189,11 +189,10 @@ void reconnect_websocket(void *arg)
             ESP_LOGI(TAG, "Reconnected to WebSocket");
             break;
         }
-        vTaskDelay(pdMS_TO_TICKS(500)); // Đợi 5 giây trước khi thử lại
+        vTaskDelay(pdMS_TO_TICKS(5000)); // Đợi 5 giây trước khi thử lại
     }
     vTaskDelete(NULL); // Xóa task khi đã kết nối lại thành công
 }
-    
 
 // Callback xử lý sự kiện WebSocket
 static void websocket_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
@@ -283,7 +282,7 @@ static void websocket_event_handler(void *handler_args, esp_event_base_t base, i
 void websocket_app_start(void)
 {
     esp_websocket_client_config_t websocket_cfg = {
-        .uri = "ws://192.168.1.3:8080/websocket", // Thay bằng URL WebSocket của bạn
+        .uri = WEBSOCKET_URL, // Thay bằng URL WebSocket của bạn
     };
 
     // Khởi tạo WebSocket client

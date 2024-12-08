@@ -49,9 +49,25 @@ esp_err_t get_device(httpd_req_t *req)
     // Chuẩn bị JSON response
     char response[200];
     snprintf(response, sizeof(response),
-             "{\"product_id\":\"%s\",\"deviceMqtt\":\"%s\",\"numOfRelay\":3,\"name\":\"Smart Socket\",\"type\":\"Plug\",\"status\":false}",
-             device.productId,
-             device.deviceMqtt);
+             "{\"product_id\":\"%s\",\"ipAddress\":\"%s\",\"numOfRelay\":3,\"name\":\"Smart Socket\",\"type\":\"Plug\",\"status\":false}",
+             device.productId, get_ip_address_as_string());
+
+    // Gửi response
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_send(req, response, strlen(response));
+    return ESP_OK;
+}
+esp_err_t disconnect_device(httpd_req_t *req)
+{
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Headers", "Content-Type");
+    save_string_to_nvs("WIFI_MODE", "SMART_CONFIG");
+    smart_config_start();
+    // Chuẩn bị JSON response
+    char response[200];
+    snprintf(response, sizeof(response),
+             "{\"code\":2000,\"message\":\"successfully\"}");
 
     // Gửi response
     httpd_resp_set_type(req, "application/json");
@@ -209,16 +225,18 @@ esp_err_t schedule_update_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
-esp_err_t device_update_handler(httpd_req_t *req) {
+esp_err_t device_update_handler(httpd_req_t *req)
+{
     // Allow all origins for CORS
     httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
 
     int remaining = req->content_len;
-    char buf[remaining + 1];  // Buffer to hold the incoming data
+    char buf[remaining + 1]; // Buffer to hold the incoming data
     int ret;
     ESP_LOGI(HTTP_SERVER_TAG, "Remaining data: %i, Buffer size: %i", remaining, sizeof(buf));
 
-    if (remaining > sizeof(buf) - 1) {
+    if (remaining > sizeof(buf) - 1)
+    {
         ESP_LOGE("SERVER", "Content too long");
         httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Content too long");
         return ESP_FAIL;
@@ -226,16 +244,18 @@ esp_err_t device_update_handler(httpd_req_t *req) {
 
     // Read the content from the HTTP request
     ret = httpd_req_recv(req, buf, remaining);
-    if (ret <= 0) {
+    if (ret <= 0)
+    {
         ESP_LOGE("SERVER", "Failed to receive post content");
         httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Failed to receive post content");
         return ESP_FAIL;
     }
-    buf[ret] = '\0';  // Null-terminate the buffer
+    buf[ret] = '\0'; // Null-terminate the buffer
 
     // Parse the JSON content
     cJSON *json = cJSON_Parse(buf);
-    if (json == NULL) {
+    if (json == NULL)
+    {
         ESP_LOGE("SERVER", "Invalid JSON");
         httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid JSON");
         return ESP_FAIL;
@@ -243,7 +263,8 @@ esp_err_t device_update_handler(httpd_req_t *req) {
 
     // Extract deviceServer from the JSON
     cJSON *device_server_item = cJSON_GetObjectItem(json, "deviceServer");
-    if (device_server_item == NULL || !cJSON_IsString(device_server_item)) {
+    if (device_server_item == NULL || !cJSON_IsString(device_server_item))
+    {
         ESP_LOGE("SERVER", "Invalid or missing 'deviceServer' in JSON");
         cJSON_Delete(json);
         httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "'deviceServer' missing or invalid");
@@ -253,7 +274,7 @@ esp_err_t device_update_handler(httpd_req_t *req) {
     // Copy the deviceServer value into a buffer
     char buffer[128];
     strncpy(buffer, device_server_item->valuestring, sizeof(buffer) - 1);
-    buffer[sizeof(buffer) - 1] = '\0';  // Ensure null-termination
+    buffer[sizeof(buffer) - 1] = '\0'; // Ensure null-termination
 
     // Save the deviceServer to NVS
     save_string_to_nvs("deviceServer", buffer);
@@ -297,6 +318,12 @@ httpd_handle_t start_http_server(void)
             .handler = get_device,
             .user_ctx = NULL};
         httpd_register_uri_handler(server, &get_device_uri);
+        httpd_uri_t disconnect_device_uri = {
+            .uri = "/disconnect",
+            .method = HTTP_GET,
+            .handler = disconnect_device,
+            .user_ctx = NULL};
+        httpd_register_uri_handler(server, &disconnect_device_uri);
 
         httpd_uri_t post_schedule_uri = {
             .uri = "/schedule",
@@ -311,13 +338,12 @@ httpd_handle_t start_http_server(void)
             .user_ctx = NULL};
         httpd_register_uri_handler(server, &delete_schedule_uri);
         httpd_uri_t update_device_server_uri = {
-            .uri = "/device/update",            // Địa chỉ API
-            .method = HTTP_POST,                // Phương thức POST
+            .uri = "/device/update",          // Địa chỉ API
+            .method = HTTP_POST,              // Phương thức POST
             .handler = device_update_handler, // Handler xử lý yêu cầu
-            .user_ctx = NULL                    // Không có thông tin người dùng bổ sung
+            .user_ctx = NULL                  // Không có thông tin người dùng bổ sung
         };
-                httpd_register_uri_handler(server, &update_device_server_uri);
-
+        httpd_register_uri_handler(server, &update_device_server_uri);
     }
     return server;
 }

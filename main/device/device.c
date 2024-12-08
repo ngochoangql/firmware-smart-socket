@@ -21,11 +21,11 @@ void turnOffRelay(relay_t *relay)
 {
     if (relay->index == 2)
     {
-        gpio_set_level(relay->relayGpio, 0);
+        gpio_set_level(relay->relayGpio, 1);
     }
     else
     {
-        gpio_set_level(relay->relayGpio, 1);
+        gpio_set_level(relay->relayGpio, 0);
     }
     relay->status = false;
     printf("Turn off Relay %i \n", relay->index);
@@ -34,11 +34,11 @@ void turnOnRelay(relay_t *relay)
 {
     if (relay->index == 2)
     {
-        gpio_set_level(relay->relayGpio, 1);
+        gpio_set_level(relay->relayGpio, 0);
     }
     else
     {
-        gpio_set_level(relay->relayGpio, 0);
+        gpio_set_level(relay->relayGpio, 1);
     }
     relay->status = true;
     printf("Turn on Relay %i \n", relay->index);
@@ -58,4 +58,7 @@ void device_init()
     {
         relay_init(device.relayModules[i].relayGpio);
     }
+    gpio_set_level(33, 1);
+
+    
 }

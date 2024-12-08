@@ -4,6 +4,9 @@
 #include <esp_http_server.h>
 #include "task-manager/task_manager.h"
 #include "task/schedule/schedule.h"
+#include "wifi/wifi.h"
+#include "smartconfig/smart_config.h"
+#include "nvs/nvs.h"
 void web_server_init();
 
 // Khởi tạo HTTP server

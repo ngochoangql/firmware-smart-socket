@@ -15,10 +15,12 @@
 #include "web-server/web_server.h"
 #include "task-manager/task_manager.h"
 #include "task/ac-measure/ac_measure_task.h"
+#include "task/led/led_task.h"
 void app_main(void)
 {
 
     device_init();
+    xTaskCreate(&LedTask, "dht_task", 2048, NULL, 1, NULL);
     xTaskCreate(&buttonTask, "buttonTask", 4096, NULL, 1, NULL);
 
     nvs_init();
@@ -47,6 +49,7 @@ void app_main(void)
     websocket_app_start();
     web_server_init();
     send_device_data(device);
+    post_relay_to_api(device);
     // save_string_to_nvs("WIFI_MODE","STA");
 
     // smart_config_start();

@@ -9,7 +9,7 @@
 #include "smartconfig/smart_config.h"
 #include "config/config.h"
 #include "nvs/nvs.h"
-
+#include "web-socket/web_socket.h"
 typedef enum
 {
     BUTTON_IDLE,    // Trạng thái không có sự kiện

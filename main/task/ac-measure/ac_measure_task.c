@@ -1,4 +1,6 @@
 #include "ac_measure_task.h"
+static const char *BASE_URL = "http://172.20.10.8:8080";
+static const char *PRODUCT_ID = "24082000";
 
 UNIT_ACMEASURE unit_acmeasure;
 int data_index = 0;
@@ -19,7 +21,7 @@ void acmeasure_task(void *pvParameter)
     while (1)
     {
 
-        if (UNIT_ACMEASURE_getReady(&unit_acmeasure) == 1)
+        if (true)
         {
             ready_count++;
 
@@ -34,7 +36,15 @@ void acmeasure_task(void *pvParameter)
             data_buffer[data_index].power = active_power;
             data_buffer[data_index].apparentPower = apparent_power;
             data_index++;
-
+            if (current >= 1500)
+            {
+                turnOffRelay(&device.relayModules[0]);
+                turnOffRelay(&device.relayModules[1]);
+                turnOffRelay(&device.relayModules[2]);
+                handle_update_relay_from_device(1, 0);
+                handle_update_relay_from_device(2, 0);
+                handle_update_relay_from_device(3, 0);
+            }
             // Nếu đã thu thập đủ 20 mẫu, gửi dữ liệu qua HTTP POST
             if (data_index >= SAMPLES_PER_SECOND)
             {
@@ -69,10 +79,12 @@ void acmeasure_task(void *pvParameter)
                     }
                 }
                 strcat(post_data, "]");
+                char url[128];
+                snprintf(url, sizeof(url), "%s/api/v1/data/%s", BASE_URL, PRODUCT_ID);
 
                 // Gửi dữ liệu qua HTTP POST
                 esp_http_client_config_t config = {
-                    .url = "http://192.168.1.3:8080/api/v1/data/24082000",
+                    .url = url,
                     .event_handler = http_event_handler,
                 };
                 esp_http_client_handle_t client = esp_http_client_init(&config);

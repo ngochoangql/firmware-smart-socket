@@ -1,0 +1,20 @@
+# Kconfig (ở thư mục gốc của dự án)
+menu "My Custom Configuration"
+
+config PRODUCT_ID
+    string "Product ID"
+    default "24082000"
+    help
+        Enter the Product ID for the device.
+config BASE_URL
+    string "Base URL"
+    default "http://172.20.10.8:8080"
+    help
+        Enter the Base URL for the device.
+config WEBSOCKET_URL
+    string "Websocket URL"
+    default "ws://172.20.10.8:8080/websocket"
+    help
+        Enter the Websocket URL for the device.
+
+endmenu
