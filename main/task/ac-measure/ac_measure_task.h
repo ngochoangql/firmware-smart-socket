@@ -9,6 +9,7 @@
 #include "esp_http_client.h"
 #include "http-client/http_client.h"
 #include "device/device.h"
+#include "web-socket/web_socket.h"
 
 typedef struct {
     uint16_t current;

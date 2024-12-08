@@ -1,7 +1,7 @@
 #include "device.h"
 
 device_t device = {
-    .productId = "24082000",
+    .productId = "30102000",
     .deviceMqtt = "mqtt.ohstem.vn",
     .numOfRelay = 3};
 

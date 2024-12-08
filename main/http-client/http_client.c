@@ -1,6 +1,6 @@
 #include "http_client.h"
 static const char *BASE_URL = "http://172.20.10.8:8080"; 
-static const char *PRODUCT_ID = "24082000";  
+static const char *PRODUCT_ID = "30102000";  
 
 static const char *TAG = "HTTP_POST";
 

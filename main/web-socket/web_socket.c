@@ -8,7 +8,7 @@ void handle_update_schedule(char *id)
     // Tạo thông điệp JSON để gửi thông báo
     char register_message[256];
     snprintf(register_message, sizeof(register_message),
-             "{\"event\":\"notify\",\"productId\":\"24082000\",\"data\":{\"event\":\"notifyUpdateSchedule\",\"id\":\"%s\"}}",
+             "{\"event\":\"notify\",\"productId\":\"30102000\",\"data\":{\"event\":\"notifyUpdateSchedule\",\"id\":\"%s\"}}",
              id); // Sử dụng các giá trị đã lấy trước đó
 
     ESP_LOGI(TAG, "Sending register message: %s", register_message);
@@ -30,7 +30,7 @@ void handle_update_relay_from_device(int relayNumber, int status)
     // Tạo thông điệp JSON để gửi thông báo
     char register_message[256];
     snprintf(register_message, sizeof(register_message),
-             "{\"event\":\"notify\",\"productId\":\"24082000\",\"data\":{\"event\":\"notifyRelay\",\"relayNumber\":%d,\"status\":%d}}",
+             "{\"event\":\"notify\",\"productId\":\"30102000\",\"data\":{\"event\":\"notifyRelay\",\"relayNumber\":%d,\"status\":%d}}",
              relayNumber, status); // Sử dụng các giá trị đã lấy trước đó
 
     ESP_LOGI(TAG, "Sending register message: %s", register_message);
@@ -83,7 +83,7 @@ void handle_update_relay(cJSON *json)
         // Tạo thông điệp JSON để gửi
         char register_message[256]; // Cung cấp đủ không gian cho thông điệp
         snprintf(register_message, sizeof(register_message),
-                 "{\"event\":\"notify\",\"productId\":\"24082000\",\"data\":{\"event\":\"notifyRelay\",\"relayNumber\":%d,\"status\":%d}}",
+                 "{\"event\":\"notify\",\"productId\":\"30102000\",\"data\":{\"event\":\"notifyRelay\",\"relayNumber\":%d,\"status\":%d}}",
                  relayNum, relayStatus);
 
         ESP_LOGI(TAG, "Sending register message: %s", register_message);
@@ -131,7 +131,7 @@ void handle_create_schedule(cJSON *json)
     // Tạo thông điệp JSON để gửi thông báo
     char register_message[256];
     snprintf(register_message, sizeof(register_message),
-             "{\"event\":\"notify\",\"productId\":\"24082000\",\"data\":{\"event\":\"notifyCreateSchedule\",\"id\":\"%s\",\"time\":\"%s\",\"code\":\"%s\"}}",
+             "{\"event\":\"notify\",\"productId\":\"30102000\",\"data\":{\"event\":\"notifyCreateSchedule\",\"id\":\"%s\",\"time\":\"%s\",\"code\":\"%s\"}}",
              id_value, time_value, code_value); // Sử dụng các giá trị đã lấy trước đó
 
     ESP_LOGI(TAG, "Sending register message: %s", register_message);
@@ -162,7 +162,7 @@ void handle_delete_schedule(cJSON *json)
     // Tạo thông điệp JSON để gửi thông báo
     char register_message[256];
     snprintf(register_message, sizeof(register_message),
-             "{\"event\":\"notify\",\"productId\":\"24082000\",\"data\":{\"event\":\"notifyDeleteSchedule\",\"id\":\"%s\"}}",
+             "{\"event\":\"notify\",\"productId\":\"30102000\",\"data\":{\"event\":\"notifyDeleteSchedule\",\"id\":\"%s\"}}",
              cJSON_GetObjectItem(json, "id")->valuestring); // Sử dụng các giá trị đã lấy trước đó
 
     ESP_LOGI(TAG, "Sending register message: %s", register_message);
@@ -206,7 +206,7 @@ static void websocket_event_handler(void *handler_args, esp_event_base_t base, i
         ESP_LOGI(TAG, "WebSocket connected");
 
         // Tạo thông điệp đăng ký
-        const char *register_message = "{\"event\":\"register\",\"productId\":\"24082000\",\"events\":[\"updateRelay\",\"createSchedule\",\"deleteSchedule\",\"updateSchedule\"]}";
+        const char *register_message = "{\"event\":\"register\",\"productId\":\"30102000\",\"events\":[\"updateRelay\",\"createSchedule\",\"deleteSchedule\",\"updateSchedule\"]}";
         ESP_LOGI(TAG, "Sending register message: %s", register_message);
 
         // Gửi thông điệp đăng ký
