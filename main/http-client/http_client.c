@@ -34,6 +34,7 @@ esp_err_t http_event_handler(esp_http_client_event_t *evt) {
     }
     return ESP_OK;
 }
+// ủa cái port là 8080 sao5000
 
 // Hàm gửi dữ liệu thiết bị qua HTTP POST
 void send_device_data(device_t device) {
@@ -50,7 +51,7 @@ void send_device_data(device_t device) {
     // Tạo JSON từ struct device_t
     char post_data[256];
     snprintf(post_data, sizeof(post_data),
-             "{\"productId\":\"%s\", \"deviceMqtt\":\"%s\", \"deviceHttp\":\"%s\", \"numOfRelay\":%d}",
+             "{\"productId\":\"%s\", \"deviceMqtt\":\"%s\", \"deviceHttp\":\"%s\", \"numOfRelay\":%d\"status\":false, \"name\":\"Plug\"}",
              device.productId, device.deviceMqtt, get_ip_address_as_string(), device.numOfRelay);
 
     // Thiết lập yêu cầu POST với dữ liệu JSON

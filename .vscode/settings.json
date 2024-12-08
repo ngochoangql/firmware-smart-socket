@@ -4,5 +4,6 @@
         "device.h": "c",
         "nvs.h": "c",
         "button_task.h": "c"
-    }
+    },
+    "idf.adapterTargetName": "esp32"
 }

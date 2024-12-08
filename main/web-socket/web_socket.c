@@ -50,7 +50,7 @@ void handle_update_relay_from_device(int relayNumber, int status)
 // Hàm điều khiển relay
 void update_relay(int relay_index, int relay_state)
 {
-    if (relay_state == 1)
+    if (relay_state == 0)
     {
         ESP_LOGI("RELAY_CONTROL", "Relay %d turned ON", relay_index);
         // Thực hiện bật relay tại relay_index
